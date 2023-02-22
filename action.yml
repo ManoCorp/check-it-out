@@ -1,0 +1,20 @@
+name: 'Format-Out'
+description: 'Beautify your outputs'
+inputs:
+  app-name:
+    description: Application's output you want to beautify
+    required: true
+  output-file:
+    description: Output file name
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        sudo apt-get install python3-pip pandoc texlive-latex-base -y 
+        pip3 install poetry pip
+        python3 -m poetry export -f requirements.txt --output requirements.txt --without-hashes
+        pip3 install -r requirements.txt
+        python3 src/main.py -i ${{ inputs.output-file }} -f json -s file -t src/templates/${{ inputs.app-name }}.md -p MARKDOWN -d $PWD/output.md
+        cat $PWD/output.md >> $GITHUB_STEP_SUMMARY
+      shell: bash
