@@ -22,7 +22,7 @@ jobs:
           ignore-unfixed: true
           output: "trivy-results.json"
       - name: Print Results
-        uses: ../../
+        uses: ManoCorp/check-it-out@main
         with:
           app-name: trivy
           output-file: trivy-results.json
